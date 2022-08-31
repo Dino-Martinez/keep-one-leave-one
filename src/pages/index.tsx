@@ -4,7 +4,7 @@ import Image from "next/image";
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
-  const pokemon = trpc.useQuery(["pokemon.getByCode", {code: 120}]);
+  const pokemon = trpc.useQuery(["pokemon.getByCode", {code: 25}]);
   return (
     <>
       <Head>
@@ -17,7 +17,7 @@ const Home: NextPage = () => {
           {pokemon.data ? 
             <>
               <div>
-                <h3 className="text-center">{pokemon.data.name}</h3>
+                <h3 className="text-center capitalize">{pokemon.data.name}</h3>
                 <Image 
                   src={pokemon.data.sprite}
                  alt={`Image of ${pokemon.data.name}`}
