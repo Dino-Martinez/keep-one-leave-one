@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Pokemon" ALTER COLUMN "kept" SET DEFAULT 0,
+ALTER COLUMN "left" SET DEFAULT 0;
