@@ -1,10 +1,25 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { useState } from "react";
 import { trpc } from "../utils/trpc";
 
+interface Vote {
+  voteFor: number,
+  voteAgainst: number
+}
+
 const Home: NextPage = () => {
-  const pokemon = trpc.useQuery(["pokemon.getByCode", { code: 25 }]);
+  const [firstId] = useState(Math.floor(Math.random() * 151 + 1));
+  const [secondId] = useState(Math.floor(Math.random() * 151 + 1));
+
+  const pokemon = [trpc.useQuery(["pokemon.getByCode", { code: firstId }]), trpc.useQuery(["pokemon.getByCode", { code: secondId }])];
+  const voteMutation = trpc.useMutation("pokemon.vote");
+
+  const vote = async (input: Vote) => {
+    await voteMutation.mutate(input);
+    window.location.reload();
+  };
   return (
     <>
       <Head>
@@ -13,18 +28,32 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div className="flex items-center justify-center w-full pt-12 text-4xl ">
-          {pokemon.data ? (
+        <h1 className="mt-auto text-4xl text-center">Keep One, Leave One: Pokemon Edition</h1>
+        <div className="flex items-center justify-center w-full gap-12 pt-12 text-4xl ">
+          {pokemon[0] && pokemon[1] && pokemon[0].data && pokemon[1].data ? (
             <>
-              <div>
-                <h3 className="text-center capitalize">{pokemon.data.name}</h3>
+              <div className="flex flex-col p-6 px-12 border border-gray-500 rounded">
+                <h3 className="text-center capitalize">{pokemon[0].data.name}</h3>
                 <Image
-                  src={pokemon.data.sprite}
-                  alt={`Image of ${pokemon.data.name}`}
+                  src={pokemon[0].data.sprite}
+                  alt={`Image of ${pokemon[0].data.name}`}
                   width={256}
                   height={256}
                   layout="fixed"
                 />
+                <button className="px-0 py-3 border border-gray-500 rounded hover:bg-gray-300" onClick={() => {vote({voteFor: firstId, voteAgainst: secondId});}}>Keep me!</button>
+              </div>
+              <p>VS.</p>
+              <div className="flex flex-col p-6 px-12 border border-gray-500 rounded">
+                <h3 className="text-center capitalize">{pokemon[1].data.name}</h3>
+                <Image
+                  src={pokemon[1].data.sprite}
+                  alt={`Image of ${pokemon[1].data.name}`}
+                  width={256}
+                  height={256}
+                  layout="fixed"
+                />
+                <button className="px-0 py-3 border border-gray-500 rounded hover:bg-gray-300" onClick={() => {vote({voteFor: secondId, voteAgainst: firstId});}}>Keep me!</button>
               </div>
             </>
           ) : (
