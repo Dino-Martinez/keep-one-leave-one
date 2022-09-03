@@ -1,8 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import { useState } from "react";
 import { trpc } from "../utils/trpc";
+import { Pokemon } from "./components/Pokemon";
 
 interface Vote {
   voteFor: number,
@@ -10,16 +9,18 @@ interface Vote {
 }
 
 const Home: NextPage = () => {
-  const [firstId] = useState(Math.floor(Math.random() * 151 + 1));
-  const [secondId] = useState(Math.floor(Math.random() * 151 + 1));
-
-  const pokemon = [trpc.useQuery(["pokemon.getByCode", { code: firstId }]), trpc.useQuery(["pokemon.getByCode", { code: secondId }])];
+  const {data: pokePair, refetch} = trpc.useQuery(["pokemon.getPokemonPair"], {
+    refetchInterval: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  });
   const voteMutation = trpc.useMutation("pokemon.vote");
 
   const vote = async (input: Vote) => {
+    refetch();
     await voteMutation.mutate(input);
-    window.location.reload();
   };
+
   return (
     <>
       <Head>
@@ -30,31 +31,11 @@ const Home: NextPage = () => {
       <main>
         <h1 className="mt-auto text-4xl text-center">Keep One, Leave One: Pokemon Edition</h1>
         <div className="flex items-center justify-center w-full gap-12 pt-12 text-4xl ">
-          {pokemon[0] && pokemon[1] && pokemon[0].data && pokemon[1].data ? (
+          {pokePair && pokePair.first && pokePair.second ? (
             <>
-              <div className="flex flex-col p-6 px-12 border border-gray-500 rounded">
-                <h3 className="text-center capitalize">{pokemon[0].data.name}</h3>
-                <Image
-                  src={pokemon[0].data.sprite}
-                  alt={`Image of ${pokemon[0].data.name}`}
-                  width={256}
-                  height={256}
-                  layout="fixed"
-                />
-                <button className="px-0 py-3 border border-gray-500 rounded hover:bg-gray-300" onClick={() => {vote({voteFor: firstId, voteAgainst: secondId});}}>Keep me!</button>
-              </div>
+              <Pokemon pokemon={pokePair.first} vote={() => {vote({voteFor: pokePair.first.code, voteAgainst: pokePair.second.code});}}/>
               <p>VS.</p>
-              <div className="flex flex-col p-6 px-12 border border-gray-500 rounded">
-                <h3 className="text-center capitalize">{pokemon[1].data.name}</h3>
-                <Image
-                  src={pokemon[1].data.sprite}
-                  alt={`Image of ${pokemon[1].data.name}`}
-                  width={256}
-                  height={256}
-                  layout="fixed"
-                />
-                <button className="px-0 py-3 border border-gray-500 rounded hover:bg-gray-300" onClick={() => {vote({voteFor: secondId, voteAgainst: firstId});}}>Keep me!</button>
-              </div>
+              <Pokemon pokemon={pokePair.second} vote={() => {vote({voteFor: pokePair.second.code, voteAgainst: pokePair.first.code});}}/>
             </>
           ) : (
             "Loading..."
