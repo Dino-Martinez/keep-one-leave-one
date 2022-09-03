@@ -1,7 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import { useState } from "react";
 import { trpc } from "../utils/trpc";
-import { Pokemon } from "./components/Pokemon";
+import { PokemonDisplay } from "./components/Pokemon";
 
 interface Vote {
   voteFor: number,
@@ -9,6 +10,8 @@ interface Vote {
 }
 
 const Home: NextPage = () => {
+  const [hasVoted, setVoted] = useState(false);
+
   const {data: pokePair, refetch} = trpc.useQuery(["pokemon.getPokemonPair"], {
     refetchInterval: false,
     refetchOnReconnect: false,
@@ -17,8 +20,13 @@ const Home: NextPage = () => {
   const voteMutation = trpc.useMutation("pokemon.vote");
 
   const vote = async (input: Vote) => {
-    refetch();
     await voteMutation.mutate(input);
+    setVoted(true);
+  };
+
+  const reset = () => {
+    setVoted(false);
+    refetch();
   };
 
   return (
@@ -31,15 +39,26 @@ const Home: NextPage = () => {
       <main>
         <h1 className="mt-auto text-4xl text-center">Keep One, Leave One: Pokemon Edition</h1>
         <div className="flex items-center justify-center w-full gap-12 pt-12 text-4xl ">
-          {pokePair && pokePair.first && pokePair.second ? (
+          {pokePair ? (
             <>
-              <Pokemon pokemon={pokePair.first} vote={() => {vote({voteFor: pokePair.first.code, voteAgainst: pokePair.second.code});}}/>
+              <PokemonDisplay pokemon={pokePair.first} vote={() => {vote({voteFor: pokePair.first.code, voteAgainst: pokePair.second.code});}}/>
               <p>VS.</p>
-              <Pokemon pokemon={pokePair.second} vote={() => {vote({voteFor: pokePair.second.code, voteAgainst: pokePair.first.code});}}/>
+              <PokemonDisplay pokemon={pokePair.second} vote={() => {vote({voteFor: pokePair.second.code, voteAgainst: pokePair.first.code});}}/>
             </>
           ) : (
             "Loading..."
           )}
+
+            {hasVoted && 
+            <>
+              <p>{pokePair?.first.kept}</p>
+              <p>{pokePair?.first.left}</p>
+              <p>{pokePair?.second.kept}</p>
+              <p>{pokePair?.second.left}</p>
+              <button onClick={reset}>Next</button>
+            </>
+            }
+
         </div>
       </main>
     </>

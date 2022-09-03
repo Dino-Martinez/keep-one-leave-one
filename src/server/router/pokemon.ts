@@ -2,6 +2,7 @@ import { createRouter } from "./context";
 import { z } from "zod";
 import { getPokedexCodes } from "../../utils/getPokedexCodes";
 import { prisma } from "../db/client";
+import { Pokemon } from "@prisma/client";
 
 const checkForPokemon =async (code: number) => {
   const pokemonFromDb = await prisma.pokemon.findFirst({
@@ -28,7 +29,7 @@ export const pokemonRouter = createRouter()
   .query("getPokemonPair", {
     async resolve () {
       const [firstId, secondId] = getPokedexCodes();
-      const pokePair = [await checkForPokemon(firstId), await checkForPokemon(secondId)];
+      const pokePair: [Pokemon, Pokemon] = [await checkForPokemon(firstId), await checkForPokemon(secondId)];
       if (pokePair.length < 2) throw new Error("Failed to find two pokemon");
       return {first: pokePair[0], second: pokePair[1]};
     }

@@ -2,7 +2,7 @@ import Image from "next/image";
 import { inferQueryResponse } from "../api/trpc/[trpc]";
 
 type Pokemon = inferQueryResponse<"pokemon.getPokemonPair">["first"];
-export const Pokemon: React.FC<{
+export const PokemonDisplay: React.FC<{
     pokemon: Pokemon,
     vote: ()=>void
 }> = ({pokemon, vote}) => {
