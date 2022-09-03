@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { inferQueryResponse } from "../api/trpc/[trpc]";
+import { inferQueryResponse } from "../pages/api/trpc/[trpc]";
 
 type Pokemon = inferQueryResponse<"pokemon.getPokemonPair">["first"];
 export const PokemonDisplay: React.FC<{
