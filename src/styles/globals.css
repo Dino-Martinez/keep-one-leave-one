@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400;700&display=swap");
+
+html,
+body {
+  font-family: "Oxygen", sans-serif;
+}
+
+.floating-animation {
+  animation: float infinite alternate 0.75s ease-in-out;
+}
+
+@keyframes float {
+  from {
+    margin-top: -0.5rem;
+  }
+
+  to {
+    margin-top: 0.25rem;
+  }
+}
