@@ -12,6 +12,11 @@ body {
   animation: float infinite alternate 0.75s ease-in-out;
 }
 
+.grow-antimation {
+  transform-origin: bottom;
+  animation: grow forwards 0.5s ease-out;
+}
+
 @keyframes float {
   from {
     margin-top: -0.5rem;
@@ -19,5 +24,15 @@ body {
 
   to {
     margin-top: 0.25rem;
+  }
+}
+
+@keyframes grow {
+  from {
+    transform: scaleY(0);
+  }
+
+  to {
+    transform: scaleY(1);
   }
 }

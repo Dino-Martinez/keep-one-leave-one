@@ -9,7 +9,7 @@ export const PokeStats:React.FC<{
         <>
             <div className="mt-10 text-xl gap-6 flex justify-between items-end">
                 <div>
-                    <div className="bg-red-400 mx-auto" style={{
+                    <div className="bg-red-400 mx-auto grow-antimation" style={{
                         width: '4rem',
                         height: `${left.kept * 25}px`
                     }}></div>
@@ -17,7 +17,7 @@ export const PokeStats:React.FC<{
                 </div>
                 
                 <div>
-                    <div className="bg-red-300 mx-auto" style={{
+                    <div className="bg-red-300 mx-auto grow-antimation" style={{
                         width: '4rem',
                         height: `${left.left * 25}px`
                     }}></div>
@@ -25,7 +25,7 @@ export const PokeStats:React.FC<{
                 </div>
 
                 <div>
-                    <div className="bg-blue-400 mx-auto" style={{
+                    <div className="bg-blue-400 mx-auto grow-antimation" style={{
                         width: '4rem',
                         height: `${right.kept * 25}px`
                     }}></div>
@@ -33,7 +33,7 @@ export const PokeStats:React.FC<{
                 </div>
 
                 <div>
-                    <div className="bg-blue-300 mx-auto" style={{
+                    <div className="bg-blue-300 mx-auto grow-antimation" style={{
                         width: '4rem',
                         height: `${right.left * 25}px`
                     }}></div>
