@@ -11,8 +11,6 @@ const checkForPokemon =async (code: number) => {
 
   if (pokemonFromDb)
     return pokemonFromDb;
-
-  console.log('could not find pokemon. fetching...', `https://pokeapi.co/api/v2/pokemon/${code}`);
   
   const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${code}`);
   const json = await res.json();
