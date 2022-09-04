@@ -7,7 +7,9 @@ export const PokemonDisplay: React.FC<{
     vote: ()=>void,
     disabled: boolean
 }> = ({pokemon, vote, disabled}) => {
+    //Typescript wasn't happy
     if (!pokemon) return <></>;
+    
     return (
         <div className="flex flex-col p-6 px-12 border border-gray-500 rounded">
                 <h2 className="text-center capitalize">{pokemon.name}</h2>
