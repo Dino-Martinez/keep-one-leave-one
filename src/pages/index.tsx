@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import { useState } from "react";
 import { trpc } from "../utils/trpc";
 import { PokemonDisplay } from "../components/Pokemon";
+import { PokeStats } from "../components/PokeStats";
 
 interface Vote {
   voteFor: number,
@@ -10,7 +11,6 @@ interface Vote {
 
 const Home: NextPage = () => {
   const [hasVoted, setVoted] = useState(false);
-
   const {data: pokePair, refetch} = trpc.useQuery(["pokemon.getPokemonPair"], {
     refetchInterval: false,
     refetchOnReconnect: false,
@@ -29,7 +29,7 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <main>
+      <main className="flex flex-col items-center justify-center">
         <h1 className="mt-auto text-4xl text-center">Keep One, Leave One: Pokemon Edition</h1>
         <div className="flex items-center justify-center w-full gap-12 pt-12 text-4xl ">
           {pokePair ? (
@@ -41,18 +41,12 @@ const Home: NextPage = () => {
           ) : (
             "Loading..."
           )}
-
-            {hasVoted && 
+        </div>
+            {hasVoted && pokePair &&
             <>
-              <p>{pokePair?.first.kept}</p>
-              <p>{pokePair?.first.left}</p>
-              <p>{pokePair?.second.kept}</p>
-              <p>{pokePair?.second.left}</p>
-              <button onClick={reset}>Next</button>
+              <PokeStats reset={reset} left={pokePair.first} right={pokePair.second}/>
             </>
             }
-
-        </div>
       </main>
     </>
   );
