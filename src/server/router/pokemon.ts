@@ -1,6 +1,5 @@
 import { createRouter } from "./context";
 import { z } from "zod";
-import { getPokedexCodes } from "../../utils/getPokedexCodes";
 import { prisma } from "../db/client";
 import { Pokemon } from "@prisma/client";
 
@@ -25,12 +24,17 @@ const checkForPokemon =async (code: number) => {
 
 export const pokemonRouter = createRouter()
   .query("getPokemonPair", {
-    async resolve () {
-      const [firstId, secondId] = getPokedexCodes();
-      const pokePair: [Pokemon, Pokemon] = [await checkForPokemon(firstId), await checkForPokemon(secondId)];
-      if (pokePair.length < 2) throw new Error("Failed to find two pokemon");
-      return {first: pokePair[0], second: pokePair[1]};
-    }
+    input: z
+      .tuple([
+        z.number(),
+        z.number()
+      ]),
+      async resolve({input}) {
+        const [firstId, secondId] = input;
+        const pokePair: [Pokemon, Pokemon] = [await checkForPokemon(firstId), await checkForPokemon(secondId)];
+        if (pokePair.length < 2) throw new Error("Failed to find two pokemon");
+        return {first: pokePair[0], second: pokePair[1]};
+      }
   })
   .mutation("vote",{
     input: z
