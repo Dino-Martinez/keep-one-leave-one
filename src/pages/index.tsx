@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import { useState } from "react";
 import { trpc } from "../utils/trpc";
-import { PokemonDisplay } from "../components/Pokemon";
+import { PokemonDisplay } from "../components/PokemonDisplay";
 import { PokeStats } from "../components/PokeStats";
 
 interface Vote {

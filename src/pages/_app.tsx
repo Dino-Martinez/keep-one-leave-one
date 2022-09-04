@@ -5,7 +5,7 @@ import { withTRPC } from "@trpc/next";
 import { SessionProvider } from "next-auth/react";
 import type { AppType } from "next/dist/shared/lib/utils";
 import superjson from "superjson";
-import { Layout } from "../components/Layout";
+import Head from "next/head";
 import type { AppRouter } from "../server/router";
 import "../styles/globals.css";
 
@@ -15,7 +15,15 @@ const MyApp: AppType = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <Layout />
+      <Head>
+            <title>Keep One Leave One</title>
+            <meta name="description" content="A site that lets you choose between random pokemon" />
+            <link rel="icon" href="/favicon.ico" />
+            <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+            <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+            <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+            <link rel="manifest" href="/site.webmanifest"></link>
+        </Head>
       <Component {...pageProps} />
     </SessionProvider>
   );

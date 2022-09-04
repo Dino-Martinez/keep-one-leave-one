@@ -9,7 +9,7 @@ export const PokemonDisplay: React.FC<{
     if (!pokemon) return <></>;
     return (
         <div className="flex flex-col p-6 px-12 border border-gray-500 rounded">
-                <h3 className="text-center capitalize">{pokemon.name}</h3>
+                <h2 className="text-center capitalize">{pokemon.name}</h2>
                 <Image
                   src={pokemon.sprite}
                   alt={`Image of ${pokemon.name}`}
