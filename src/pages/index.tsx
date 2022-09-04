@@ -25,9 +25,11 @@ const Home: NextPage = () => {
   const reset = () => {
     setVoted(false);
     setIds(getPokedexCodes());
+    voteMutation.reset();
   };
 
   useEffect(() => {
+    console.log(hasVoted, voteMutation);
     const updateStats = async () => {
       await refetch();
       setVoted(true);
@@ -41,8 +43,8 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <main className="flex flex-col items-center justify-center">
-        <h1 className="mt-auto text-4xl text-center">Keep One, Leave One: Pokemon Edition</h1>
+      <main className="flex flex-col items-center justify-center bg-gray-900 text-white h-screen">
+        <h1 className="text-4xl text-center">Keep One, Leave One: Pokemon Edition</h1>
         <div className="flex items-center justify-center w-full gap-12 pt-12 text-4xl ">
           {pokePair ? (
             <>

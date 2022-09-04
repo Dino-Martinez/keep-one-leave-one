@@ -19,8 +19,9 @@ export const PokemonDisplay: React.FC<{
                   width={256}
                   height={256}
                   layout="fixed"
+                  className="floating-animation"
                 />
-                <button className={`px-0 py-3 border border-gray-500 rounded hover:bg-gray-300 disabled:bg-gray-300 ${disabled ? 'cursor-not-allowed focus:outline-none' : '' }`} disabled={disabled} onClick={vote}>Keep me!</button>
+                <button className={`px-0 py-3 border border-gray-500 rounded hover:bg-gray-600 disabled:bg-gray-500 disabled:text-gray-400 ${disabled ? 'cursor-not-allowed focus:outline-none' : '' }`} disabled={disabled} onClick={vote}>Keep me!</button>
               </div>
     );
 };
